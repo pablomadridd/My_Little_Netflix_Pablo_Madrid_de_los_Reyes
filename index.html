@@ -48,30 +48,32 @@
 
         // VIEWS
         const indexView = (movies) => {
-            let i=0;
+            let i = 0;
             let view = "";
-
-            while(i < movies.length) {
-              view += `
-                <div class="movie">
-                   <div class="movie-img">
-                        <img data-my-id="${i}" src="${movies[i].thumbnail}" onerror="this.src='files/noimage.png'"/>
-                   </div>
-                   <div class="title">
-                       ${movies[i].title || "<em>No title</em>"}
-                   </div>
-                   <div class="actions">
-                        <!-------------------Insert here "Show" and "Delete" buttons------------------>
-                       <button class="edit" data-my-id="${i}">edit</button>
-                    </div>
-                </div>\n`;
-              i = i + 1;
-            };
-
+        
+            while (i < movies.length) {
+                view += `
+                    <div class="movie">
+                        <div class="movie-img">
+                            <img data-my-id="${i}" src="${movies[i].thumbnail}" onerror="this.src='files/noimage.png'"/>
+                        </div>
+                        <div class="title">
+                            ${movies[i].title || "<em>No title</em>"}
+                        </div>
+                        <div class="actions">
+                            <button class="show" data-my-id="${i}">Show</button>
+                            <button class="edit" data-my-id="${i}">Edit</button>
+                            <button class="delete" data-my-id="${i}">Delete</button>
+                        </div>
+                    </div>\n`;
+                i = i + 1;
+            }
+        
             view += `<div class="actions">
-                        <!-----------------------Insert here "Add" and "Reset" buttons---------------->
-                    </div>`;
-
+                        <button class="new">Add</button>
+                        <button class="reset">Reset</button>
+                     </div>`;
+        
             return view;
         };
 
@@ -105,35 +107,42 @@
 
 
         const showView = (movie) => {
-            // Complete: generate HTML with movie information
-            // ...
-
             return `
-             <p>
-
-             
-             
-             </p>
-             <div class="actions">
-                <button class="index">Back</button>
-             </div>`;
-        }
+                <h2>Movie Details</h2>
+                <div>
+                    <strong>Title:</strong> ${movie.title || "<em>No title</em>"}
+                </div>
+                <div>
+                    <strong>Director:</strong> ${movie.director || "<em>No director</em>"}
+                </div>
+                <div class="actions">
+                    <button class="index">Back</button>
+                </div>
+            `;
+        };
 
 
         const newView = () => {
-            // Complete: generate form to create new movie
-            // ...
-
-            return `<h2>Create Movie</h2>
-
-
-
-
-
+            return `
+                <h2>Create Movie</h2>
+                <div class="field">
+                    Title <br>
+                    <input type="text" id="title" placeholder="Title">
+                </div>
+                <div class="field">
+                    Director <br>
+                    <input type="text" id="director" placeholder="Director">
+                </div>
+                <div class="field">
+                    Thumbnail <br>
+                    <input type="text" id="thumbnail" placeholder="Thumbnail URL">
+                </div>
                 <div class="actions">
+                    <button class="create">Create</button>
                     <button class="index">Back</button>
-                </div>`;
-        }
+                </div>
+            `;
+        };
 
 
 
@@ -144,10 +153,9 @@
          };
 
 
-        const showContr = (i) => {
-            // Complete: controller that shows the showView(movie)
-            // ...
-
+         const showContr = (i) => {
+            let movie = JSON.parse(localStorage.my_movies)[i];
+            document.getElementById('main').innerHTML = showView(movie);
         };
 
         const newContr = () => {
