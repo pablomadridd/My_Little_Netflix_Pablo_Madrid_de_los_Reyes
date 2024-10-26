@@ -61,16 +61,16 @@
                             ${movies[i].title || "<em>No title</em>"}
                         </div>
                         <div class="actions">
-                            <button class="show" data-my-id="${i}">Show</button>
                             <button class="edit" data-my-id="${i}">Edit</button>
+                            <button class="show" data-my-id="${i}">View</button>
                             <button class="delete" data-my-id="${i}">Delete</button>
                         </div>
                     </div>\n`;
-                i = i + 1;
+                i++;
             }
         
             view += `<div class="actions">
-                        <button class="new">Add</button>
+                        <button class="new">Add Movie</button>
                         <button class="reset">Reset</button>
                      </div>`;
         
@@ -108,14 +108,14 @@
 
         const showView = (movie) => {
             return `
-                <h2>Movie Details</h2>
-                <div>
-                    <strong>Title:</strong> ${movie.title || "<em>No title</em>"}
-                </div>
-                <div>
+                <h2 style="color: var(--primary); font-size: 24px; margin-bottom: 10px; text-align: left;">${movie.title}</h2>
+                <div style="margin-bottom: 15px; text-align: left;">
                     <strong>Director:</strong> ${movie.director || "<em>No director</em>"}
                 </div>
-                <div class="actions">
+                <div class="movie-img" style="max-width: 300px;">
+                    <img src="${movie.thumbnail}" onerror="this.src='files/noimage.png'" alt="${movie.title}" style="width: 100%; height: auto; border-radius: 5px;">
+                </div>
+                <div class="actions" style="margin-top: 15px;">
                     <button class="index">Back</button>
                 </div>
             `;
@@ -138,7 +138,7 @@
                     <input type="text" id="thumbnail" placeholder="Thumbnail URL">
                 </div>
                 <div class="actions">
-                    <button class="create">Create</button>
+                    <button class="create">Save</button>  <!-- Cambiado de Create a Save -->
                     <button class="index">Back</button>
                 </div>
             `;
@@ -163,22 +163,19 @@
         };
 
         const createContr = () => {
-            // Obtener valores de los campos de entrada
             const title = document.getElementById('title').value;
             const director = document.getElementById('director').value;
-            const thumbnail = document.getElementById('thumbnail').value;
+            let thumbnail = document.getElementById('thumbnail').value;
         
-            // Crear el nuevo objeto de película
+            // Asignar la ruta local si el usuario proporciona solo el nombre del archivo
+            if (!thumbnail.startsWith('http') && !thumbnail.startsWith('https')) {
+                thumbnail = `files/${thumbnail}`;
+            }
+        
             const newMovie = { title, director, thumbnail };
-        
-            // Obtener el arreglo actual de películas y añadir la nueva película
             let my_movies = JSON.parse(localStorage.my_movies);
             my_movies.push(newMovie);
-        
-            // Guardar el nuevo arreglo de películas en localStorage
             localStorage.my_movies = JSON.stringify(my_movies);
-        
-            // Volver a la vista principal
             indexContr();
         };
 
@@ -190,9 +187,16 @@
 
         const updateContr = (i) => {
             let my_movies = JSON.parse(localStorage.my_movies);
-            my_movies[i].title    = document.getElementById('title').value;
-            my_movies[i].director  = document.getElementById('director').value;
-            my_movies[i].thumbnail = document.getElementById('thumbnail').value;
+            my_movies[i].title = document.getElementById('title').value;
+            my_movies[i].director = document.getElementById('director').value;
+            let thumbnail = document.getElementById('thumbnail').value;
+        
+            // Verificar si la miniatura es una URL completa; si no, asumir que está en la carpeta "files"
+            if (!thumbnail.startsWith('http') && !thumbnail.startsWith('https')) {
+                thumbnail = `files/${thumbnail}`;
+            }
+        
+            my_movies[i].thumbnail = thumbnail;
             localStorage.my_movies = JSON.stringify(my_movies);
             indexContr();
         };
