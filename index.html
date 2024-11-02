@@ -165,12 +165,7 @@
         const createContr = () => {
             const title = document.getElementById('title').value;
             const director = document.getElementById('director').value;
-            let thumbnail = document.getElementById('thumbnail').value;
-        
-            
-            if (!thumbnail.startsWith('http') && !thumbnail.startsWith('https')) {
-                thumbnail = `files/${thumbnail}`;
-            }
+            const thumbnail = document.getElementById('thumbnail').value; // Usar el valor tal cual
         
             const newMovie = { title, director, thumbnail };
             let my_movies = JSON.parse(localStorage.my_movies);
@@ -189,14 +184,8 @@
             let my_movies = JSON.parse(localStorage.my_movies);
             my_movies[i].title = document.getElementById('title').value;
             my_movies[i].director = document.getElementById('director').value;
-            let thumbnail = document.getElementById('thumbnail').value;
+            my_movies[i].thumbnail = document.getElementById('thumbnail').value; // Usar el valor tal cual
         
-            
-            if (!thumbnail.startsWith('http') && !thumbnail.startsWith('https')) {
-                thumbnail = `files/${thumbnail}`;
-            }
-        
-            my_movies[i].thumbnail = thumbnail;
             localStorage.my_movies = JSON.stringify(my_movies);
             indexContr();
         };
